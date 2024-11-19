@@ -70,7 +70,9 @@ export async function POST(request: Request) {
       throw new Error("Failed to send message to Discord");
     }
 
-    return new Response("thx!", { status: 200 });
+    return new Response("thx! see u on dec 4th.\nhttps://lu.ma/3bmr2ri8", {
+      status: 200,
+    });
   } catch (error) {
     console.error("Error:", error);
     return new Response("uh oh... something went wrong. try again later.", {
