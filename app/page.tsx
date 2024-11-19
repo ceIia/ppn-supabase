@@ -48,12 +48,11 @@ export default function Home() {
 
           <CliForm />
         </div>
-      </div>
-
-      <div className="fixed bottom-0 left-0 font-mono text-xs flex justify-between w-full text-stone-600 max-w-sm p-1 *:p-2 *:-m-2 *:block">
-        <a href="https://papernest.com/">papernest</a>
-        <a href="https://supabase.com/">supabase</a>
-        <a href="https://github.com/ceIia/ppn-supabase">code</a>
+        <div className="fixed bottom-0 left-0 text-xs flex justify-between w-full text-stone-600 max-w-sm p-1 *:p-2 *:-m-2 *:block">
+          <a href="https://papernest.com/">papernest</a>
+          <a href="https://supabase.com/">supabase</a>
+          <a href="https://github.com/ceIia/ppn-supabase">code</a>
+        </div>
       </div>
     </>
   );
