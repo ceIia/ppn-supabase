@@ -8,15 +8,12 @@ if (!DISCORD_WEBHOOK_URL) {
   );
 }
 
-// Define the validation schema
+// Define the validation schema with standard messages
 const formSchema = z.object({
-  name: z.string().min(2, "ur name must be at least 2 chars long!"),
-  email: z.string().email("is that really ur email?"),
-  topic: z.string().min(3, "come on... what's ur topic?"),
-  message: z
-    .string()
-    .min(10, "ur message must be at least 10 chars long!")
-    .max(1000, "ur message must not exceed 1000 chars!"),
+  name: z.string().min(2),
+  email: z.string().email(),
+  topic: z.string().min(3),
+  message: z.string().min(10).max(1000),
 });
 
 export async function POST(request: Request) {
@@ -26,14 +23,25 @@ export async function POST(request: Request) {
   const result = formSchema.safeParse(data);
 
   if (!result.success) {
-    // Extract error messages and format them as text
-    const errorMessages = result.error.issues.map((issue) => issue.message);
-    const errorText = `there are some problems with ur submission:\n- ${errorMessages.join(
-      "\n- "
-    )}\n\nplease try again.`;
+    // Simplified error structure focusing on field validation
+    const errorResponse = {
+      error: {
+        message: "Invalid request parameters",
+        type: "invalid_request_error",
+        param: result.error.issues[0].path[0], // First error field
+        code: "invalid_parameter",
+        details: result.error.issues.map((issue) => ({
+          field: issue.path[0],
+          type: "invalid_value",
+        })),
+      },
+    };
 
-    return new Response(errorText, {
+    return new Response(JSON.stringify(errorResponse), {
       status: 400,
+      headers: {
+        "Content-Type": "application/json",
+      },
     });
   }
 
@@ -44,7 +52,7 @@ export async function POST(request: Request) {
     embeds: [
       {
         title: "New Event Registration",
-        color: 0x00ff00, // Green color
+        color: 0x00ff00,
         fields: [
           { name: "Name", value: name },
           { name: "Email", value: email },
@@ -70,13 +78,38 @@ export async function POST(request: Request) {
       throw new Error("Failed to send message to Discord");
     }
 
-    return new Response("thx! see u on dec 4th.\nhttps://lu.ma/3bmr2ri8", {
+    const successResponse = {
+      success: true,
+      message: "thx! see u on dec 4th.",
+      event: {
+        when: "dec 4th, 2024 at 7pm",
+        who: "papernest (Le Cargo)",
+        where: "157 boulevard Macdonald, 75019 Paris",
+        register: "https://lu.ma/3bmr2ri8",
+      },
+    };
+
+    return new Response(JSON.stringify(successResponse), {
       status: 200,
+      headers: {
+        "Content-Type": "application/json",
+      },
     });
   } catch (error) {
+    const errorResponse = {
+      error: {
+        message: "uh oh... something went wrong. try again later.",
+        type: "api_error",
+        code: "internal_server_error",
+      },
+    };
+
     console.error("Error:", error);
-    return new Response("uh oh... something went wrong. try again later.", {
+    return new Response(JSON.stringify(errorResponse), {
       status: 500,
+      headers: {
+        "Content-Type": "application/json",
+      },
     });
   }
 }
