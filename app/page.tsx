@@ -1,4 +1,4 @@
-import CliForm from "./components/cli-form";
+import { CliForm } from "~/components/cli-form";
 
 export default function Home() {
   return (

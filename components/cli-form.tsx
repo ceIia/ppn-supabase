@@ -47,7 +47,7 @@ const validateInput = (step: FormStep, value: string) => {
   return null;
 };
 
-export default function CliForm() {
+export function CliForm() {
   const [currentStep, setCurrentStep] = useState<FormStep>("name");
   const [error, setError] = useState<string | null>(null);
   const [editingStep, setEditingStep] = useState<FormStep | null>(null);
