@@ -1,11 +1,15 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Geist_Mono } from "next/font/google";
 import "./globals.css";
 
 import { Analytics } from "@vercel/analytics/react";
 import { IOSZoomPrevention } from "~/components/ios-zoom-prevention";
 
-const inter = Inter({ subsets: ["latin"] });
+const geistMono = Geist_Mono({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-geist-mono",
+});
 
 export const metadata: Metadata = {
   title: "supabase launch week paris | dec 4th @ papernest",
@@ -53,7 +57,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={`${geistMono.variable} antialiased`}>
         <IOSZoomPrevention />
         {children}
         <Analytics />
