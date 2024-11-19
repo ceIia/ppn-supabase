@@ -8,11 +8,8 @@ const config: Config = {
   ],
   theme: {
     extend: {
-      keyframes: {
-        blink: {
-          "from, to": { borderColor: "transparent" },
-          "50%": { borderColor: "white" },
-        },
+      fontFamily: {
+        mono: ["var(--font-geist-mono)"],
       },
     },
   },
